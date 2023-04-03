@@ -1,19 +1,24 @@
-name: Deploy App
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - gh-pages
+      - gh-pages # Cambia esto por el nombre de tu rama principal
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v2
-    - name: Install Dependencies
-      run: npm install
-    - name: Deploy
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: npm run deploy
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: npm install
+      - name: Copy files to root directory
+        run: cp -R ./* .
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "mappiapps@gmail.com"
+          git config --local user.name "mappimaps"
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+          git push origin gh-pages
