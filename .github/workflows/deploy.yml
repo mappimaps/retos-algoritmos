@@ -1,9 +1,9 @@
-name: Deploy to GitHub Pages
+name: Deploy to gh-pages
 
 on:
   push:
     branches:
-      - main # cambia por la rama en la que tengas los archivos a desplegar
+      - [NOMBRE_DE_TU_RAMA]
 
 jobs:
   deploy:
@@ -11,12 +11,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Copy files to root directory
+      
+      - name: Deploy
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         run: |
-          rm -rf *
-          cp -r ${{ github.workspace }}/build/* .
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
-        with:
-          branch: gh-pages
-          folder: .
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git checkout gh-pages
+          rm -rf ./*
+          cp -r * ./.github/workflows/ # Copia todo menos la carpeta .github
+          git add -A .
+          git commit -m "Deploy via GitHub Actions"
+          git push -f origin gh-pages
