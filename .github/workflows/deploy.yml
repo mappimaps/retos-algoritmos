@@ -1,26 +1,40 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
     branches:
-      - gh-pages # Ajusta aquí el nombre de la rama que quieres desplegar
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Set up Git user name and email
+        uses: dawidd6/action-set-git-user-env@v2
+        with:
+          username: mappimaps
+          email: mappiapps@gmail.com
 
-    - name: Install and build
-      run: |
-        npm install
-        npm run build
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        branch: gh-pages
-        folder: . # Ajusta aquí la ruta donde se encuentran los archivos a desplegar
-        token: ${{ secrets.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 }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12.x'
+
+      - name: Copy files
+        run: |
+          cp -R ./. .
+
+      - name: Commit changes
+        run: |
+          git add -A
+          git commit -m "Update"
+      
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          github_token: ${{ secrets.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 }}
+          force: true
