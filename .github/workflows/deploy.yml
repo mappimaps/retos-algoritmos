@@ -16,4 +16,4 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ secrets.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 }}
