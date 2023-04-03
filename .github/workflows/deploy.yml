@@ -3,17 +3,24 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - gh-pages
+      - gh-pages # Ajusta aquí el nombre de la rama que quieres desplegar
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          token: ${{ secrets.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 }}
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install and build
+      run: |
+        npm install
+        npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages
+        folder: . # Ajusta aquí la ruta donde se encuentran los archivos a desplegar
+        token: ${{ secrets.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 }}
