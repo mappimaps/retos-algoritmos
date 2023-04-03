@@ -1,21 +1,19 @@
-name: Deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - gh-pages # Cambia "main" por el nombre de tu rama principal
+      - gh-pages
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
+      - name: Checkout branch
         uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
-
+          ref: gh-pages
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          branch: gh-pages # Cambia "gh-pages" por la rama donde quieres publicar tu contenido
-          folder: ./ # Cambia "build" por la carpeta donde se encuentra tu build generado con "npm run build"
+          token: ${{ secrets.ACCESS_TOKEN }}
