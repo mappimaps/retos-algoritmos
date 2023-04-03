@@ -3,21 +3,19 @@ name: Deploy
 on:
   push:
     branches:
-      - gh-pages
+      - gh-pages # Cambia "main" por el nombre de tu rama principal
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
 
-    - name: Create .nojekyll file
-      run: touch .nojekyll
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        publish_branch: gh-pages
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages # Cambia "gh-pages" por la rama donde quieres publicar tu contenido
+          folder: ./ # Cambia "build" por la carpeta donde se encuentra tu build generado con "npm run build"
