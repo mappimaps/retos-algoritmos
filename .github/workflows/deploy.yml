@@ -1,25 +1,19 @@
-name: Deploy to gh-pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - gh-pages
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
-      
-      - name: Deploy
-        env:
-          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git checkout gh-pages
-          rm -rf ./*
-          cp -r * ./.github/workflows/ # Copia todo menos la carpeta .github
-          git add -A .
-          git commit -m "Deploy via GitHub Actions"
-          git push -f origin gh-pages
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@releases/v4
+        with:
+          branch: gh-pages
+          folder: .
