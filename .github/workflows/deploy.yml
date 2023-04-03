@@ -3,19 +3,19 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - gh-pages
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Deploy
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        branch: gh-pages
-        folder: ./
-        token: ${{ secrets.ACCESS_TOKEN }}
-        cname: example.com # Si tienes un CNAME personalizado, de lo contrario eliminar esta línea
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Copy files to root directory
+        run: |
+          cp -r * ${{ github.workspace }}
+          rm -rf ${{ github.workspace }}/node_modules
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
