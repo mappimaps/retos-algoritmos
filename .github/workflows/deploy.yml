@@ -9,32 +9,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Git user name and email
-        uses: dawidd6/action-set-git-user-env@v2
-        with:
-          username: mappimaps
-          email: mappiapps@gmail.com
-
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: '12.x'
-
-      - name: Copy files
-        run: |
-          cp -R ./. .
-
-      - name: Commit changes
-        run: |
-          git add -A
-          git commit -m "Update"
-      
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          branch: gh-pages
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          force: true
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm install
+    - name: Build app
+      run: npm run build
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        branch: gh-pages
+        folder: .
+        token: ${{ secrets.ACCESS_TOKEN }}
+        cname: example.com 
